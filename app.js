@@ -11,14 +11,16 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const userRouter = require("./routes/user")
-const libraryRouter = require("./routes/library")
+const bookstoreRouter = require("./routes/bookstore")
 const cartRouter = require("./routes/cart")
 const paymentRouter = require("./routes/payment")
+const indexRouter = require("./routes/index")
 
 app.use("/",userRouter)
-app.use(libraryRouter)
+app.use(bookstoreRouter)
 app.use(cartRouter)
 app.use(paymentRouter)
+app.use(indexRouter)
 
 // express session
 // mango db

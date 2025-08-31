@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const librarycontroller = require("../controllers/library")
+const bookstorecontroller = require("../controllers/bookstore")
 
-router.get("/library",librarycontroller.getLibrary)
-router.post("/library",librarycontroller.postLibrary)
+router.get("/bookstore",bookstorecontroller.getBookstore)
+router.post("/bookstore",bookstorecontroller.postBookstore)
 module.exports = router;
