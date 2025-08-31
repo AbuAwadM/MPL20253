@@ -1,5 +1,5 @@
 exports.getHomepage = (req,res) => {
-    res.render("index")
+    res.render("homepage")
 }
 
 exports.postHomepage  = (req,res) => {

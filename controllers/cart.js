@@ -1,5 +1,9 @@
+const users = require("../models/user");
+
 exports.getCart = (req,res) => {
-    res.send("<h1>CART Application (GET method)</h1>")
+    users.find().then((usr)=>{
+        res.render("cart",{users:usr})
+    });
 }
 
 exports.postCart  = (req,res) => {

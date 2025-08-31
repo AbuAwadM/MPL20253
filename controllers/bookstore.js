@@ -1,5 +1,5 @@
 exports.getBookstore = (req,res) => {
-    res.send("<h1>LIBRARY Application (GET method)</h1>")
+    res.render("bookstore")
 }
 
 exports.postBookstore = (req,res) => {
