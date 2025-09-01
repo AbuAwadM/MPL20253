@@ -8,5 +8,11 @@ const userSchema = mongoose.Schema({
     phone:Number,
     address:String,
     sname:String,
+    cart: [{
+        bookTitle: String,
+        bookPrice: String,
+        bookImage: String,
+        quantity: { type: Number, default: 1 }
+    }]
 });
 module.exports= mongoose.model("user",userSchema);

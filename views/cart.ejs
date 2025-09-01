@@ -1,18 +1,88 @@
 <%- include('./partials/head')%>
 <%- include('./partials/nav')%>
 
-<% for (let user of users) { %>
-    <div>
-        <p>First Name: <%= user.fname %></p>
-        <p>Last Name: <%= user.lname %></p>
-        <p>Username: <%= user.username %></p>
-        <p>Password: <%= user.password %></p>
-        <p>Email: <%= user.email %></p>
-        <p>Phone: <%= user.phone %></p>
-        <p>Address: <%= user.address %></p>
-        <p>Store Name: <%= user.sname %></p>
-    </div>
-<% } %>
+<div class="container mt-4">
+    <h2>Your Cart</h2>
+    
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>User Information</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>First Name:</strong> <%= user.fname %></p>
+                <p><strong>Last Name:</strong> <%= user.lname %></p>
+                <p><strong>Username:</strong> <%= user.username %></p>
+                <p><strong>Email:</strong> <%= user.email %></p>
+                <p><strong>Phone:</strong> <%= user.phone %></p>
+                <p><strong>Address:</strong> <%= user.address %></p>
+                <p><strong>Store Name:</strong> <%= user.sname %></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h4>Cart Items</h4>
+            </div>
+            <div class="card-body">
+                <% if (user.cart && user.cart.length > 0) { %>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Book</th>
+                                <th>Title</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% let grandTotal = 0; %>
+                            <% user.cart.forEach(item => { %>
+                                <% 
+                                    const priceNumber = parseFloat(item.bookPrice.replace(' JOD', ''));
+                                    const itemTotal = priceNumber * item.quantity;
+                                    grandTotal += itemTotal;
+                                %>
+                                <tr>
+                                    <td><img src="<%= item.bookImage %>" alt="<%= item.bookTitle %>" style="width: 80px; height: auto;"></td>
+                                    <td style="vertical-align: middle;"><%= item.bookTitle %></td>
+                                    <td style="vertical-align: middle;"><%= item.bookPrice %></td>
+                                    <td style="vertical-align: middle;"><%= item.quantity %></td>
+                                    <td style="vertical-align: middle;"><%= itemTotal %> JOD</td>
+                                    <td style="vertical-align: middle;">
+                                        <form method="POST" action="/cart/remove" style="display: inline;">
+                                            <input type="hidden" name="bookTitle" value="<%= item.bookTitle %>">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Remove
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5" class="text-right">Grand Total:</th>
+                                <th><%= grandTotal %> JOD</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="mt-3">
+                        <a href="/payment" class="btn btn-primary">Proceed to Payment</a>
+                        <a href="/bookstore" class="btn btn-secondary">Continue Shopping</a>
+                    </div>
+                <% } else { %>
+                    <div class="alert alert-info">
+                        <p>Your cart is empty. <a href="/bookstore">Start shopping</a> to add items to your cart.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+</div>
+
+<div style="margin-bottom: 100px;"></div>
 
 
 <%- include('./partials/footer')%>

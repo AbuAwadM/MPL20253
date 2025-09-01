@@ -9,4 +9,6 @@ router.post("/signup",usercontroller.postUser)
 router.get("/login",usercontroller.getLogin)
 router.post("/login",usercontroller.postLogin)
 
+router.post("/add",usercontroller.postBooksToUserDB)
+
 module.exports = router;

@@ -12,10 +12,19 @@
     <tbody>
     <% for(b of booksjson){ %>
         <tr>
-            <td><img src="<%= b.image %>" alt="<%= b.book %>" style="width: 100px; height: auto;"></td> 
+            <td><img src="<%= b.image %>" style="width: 100px; height: auto;"></td> 
             <td style="vertical-align: middle;"><%= b.title %></td>
             <td style="vertical-align: middle;"><%= b.price %></td>
-            <td style="vertical-align: middle;">Add to Cart</td>
+            <td>
+                <form action="/add" method="post">
+                    <input type="hidden" name="title" value="<%= b.title %>">
+                    <input type="hidden" name="price" value="<%= b.price %>">
+                    <input type="hidden" name="image" value="<%= b.image %>">
+                    <button type="submit" class="btn btn-success p-1">Add to Cart</button>
+                </form>
+            </td>
+
+
         </tr>
         <% } %>
     </tbody>

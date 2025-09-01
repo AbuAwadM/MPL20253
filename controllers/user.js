@@ -1,12 +1,9 @@
 const user = require("../models/user");
 
-
-// Show page for Sign up
 exports.getUser = (req,res) => {
     res.render("signup")
 }
 
-// adding new user to db
 exports.postUser = (req,res) => {
     const newcust = new user({
         fname: req.body.fname,
@@ -19,7 +16,9 @@ exports.postUser = (req,res) => {
         sname: req.body.sname
     })
     newcust.save()
-        .then(() => {
+        .then((savedUser) => {
+            req.session.isAuthenticated = true;
+            req.session.user = savedUser;
             res.redirect("/bookstore");
         })
         .catch(err => {
@@ -28,7 +27,6 @@ exports.postUser = (req,res) => {
         });
 }
 
-// Showing page for login
 exports.getLogin = (req,res) => {
     res.render("login", {
         PageTitle: 'Login',
@@ -37,11 +35,12 @@ exports.getLogin = (req,res) => {
     });
 }
 
-exports.postLogin = (req, res, next) => {
+exports.postLogin = (req, res) => {
     user.find({ username: req.body.username, password: req.body.password })
         .then(userData => {
             if (userData.length != 0) {
                 req.session.isAuthenticated = true;
+                req.session.user = userData[0];
                 return res.redirect('/bookstore');
             } else {
                 return res.render('login', {
@@ -51,12 +50,42 @@ exports.postLogin = (req, res, next) => {
                 });
             }
         })
+};
+
+exports.postBooksToUserDB = (req, res) => {
+    if (!req.session.isAuthenticated || !req.session.user) {
+        return res.redirect('/login');
+    }
+
+    const { title, price, image } = req.body;
+    
+    user.findById(req.session.user._id)
+        .then(userData => {
+            if (!userData) {
+                return res.redirect('/login');
+            }
+
+            const existingBookIndex = userData.cart.findIndex(item => item.bookTitle === title);
+            
+            if (existingBookIndex > -1) {
+                userData.cart[existingBookIndex].quantity += 1;
+            } else {
+                userData.cart.push({
+                    bookTitle: title,
+                    bookPrice: price,
+                    bookImage: image,
+                    quantity: 1
+                });
+            }
+
+            return userData.save();
+        })
+        .then(savedUser => {
+            req.session.user = savedUser;
+            res.redirect('/bookstore');
+        })
         .catch(err => {
             console.log(err);
-            return res.render('login', {
-                PageTitle: 'Login',
-                isAuthenticated: req.session.isAuthenticated,
-                invalid: true
-            });
+            res.redirect('/bookstore');
         });
 };
