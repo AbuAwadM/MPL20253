@@ -1,5 +1,7 @@
+const booksjson = require("../models/books");
+
 exports.getBookstore = (req,res) => {
-    res.render("bookstore")
+    res.render("bookstore", { booksjson: booksjson })
 }
 
 exports.postBookstore = (req,res) => {

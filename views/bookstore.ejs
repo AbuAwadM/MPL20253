@@ -1,44 +1,25 @@
 <%- include('./partials/head')%>
 <%- include('./partials/nav')%>
 
-
-<div class="row p-5 m-5" >
-
-    <div class="col text-center">
-        <img src="https://m.media-amazon.com/images/I/61BhvV81YJL._AC_UY436_FMwebp_QL65_.jpg">
-        <button class="btn btn-warning mt-2">Add to Cart</button>
-    </div>
-    <div class="col text-center">
-        <img src="https://m.media-amazon.com/images/I/81yaGZ8Z+jL._AC_UY436_FMwebp_QL65_.jpg">
-        <button class="btn btn-warning mt-2">Add to Cart</button>
-
-    </div>
-    <div class="col text-center">
-        <img src="https://m.media-amazon.com/images/I/91GxcKxDi4L._AC_UY436_FMwebp_QL65_.jpg">
-            <button class="btn btn-warning mt-2">Add to Cart</button>
-    </div>
-
-</div>
-
-<div class="row row p-5 m-5" >
-
-    <div class="col text-center">
-        <img src="https://m.media-amazon.com/images/I/91sppJ-P3AL._AC_UY436_FMwebp_QL65_.jpg">
-        <button class="btn btn-warning mt-2">Add to Cart</button>
-
-    </div>
-    <div class="col text-center">
-        <img src="https://m.media-amazon.com/images/I/81qHV3ACapL._AC_UY436_FMwebp_QL65_.jpg">
-        <button class="btn btn-warning mt-2">Add to Cart</button>
-
-    </div>
-    <div class="col text-center">
-        <img src="https://m.media-amazon.com/images/I/81pBU+6mFwL._AC_UY436_FMwebp_QL65_.jpg">
-        <button class="btn btn-warning mt-2">Add to Cart</button>
-
-    </div>
-
-</div>
+<table class="table table-striped table-hover" style="margin-bottom: 100px;">
+        <thead>
+            <th>Book</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th></th>
+            
+        </thead>
+    <tbody>
+    <% for(b of booksjson){ %>
+        <tr>
+            <td><img src="<%= b.image %>" alt="<%= b.book %>" style="width: 100px; height: auto;"></td> 
+            <td style="vertical-align: middle;"><%= b.title %></td>
+            <td style="vertical-align: middle;"><%= b.price %></td>
+            <td style="vertical-align: middle;">Add to Cart</td>
+        </tr>
+        <% } %>
+    </tbody>
+</table>
 
 
 
