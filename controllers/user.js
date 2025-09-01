@@ -18,18 +18,45 @@ exports.postUser = (req,res) => {
         address: req.body.address,
         sname: req.body.sname
     })
-
-    newcust.save();
-    
+    newcust.save()
+        .then(() => {
+            res.redirect("/bookstore");
+        })
+        .catch(err => {
+            console.log(err);
+            res.redirect("/signup");
+        });
 }
 
 // Showing page for login
 exports.getLogin = (req,res) => {
-    res.render("login");
+    res.render("login", {
+        PageTitle: 'Login',
+        isAuthenticated: req.session.isAuthenticated,
+        invalid: false
+    });
 }
 
-// checking if user exists
-exports.postLogin = (req,res) => {
-    
-
-}
+exports.postLogin = (req, res, next) => {
+    user.find({ username: req.body.username, password: req.body.password })
+        .then(userData => {
+            if (userData.length != 0) {
+                req.session.isAuthenticated = true;
+                return res.redirect('/bookstore');
+            } else {
+                return res.render('login', {
+                    PageTitle: 'Login',
+                    isAuthenticated: req.session.isAuthenticated,
+                    invalid: true
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return res.render('login', {
+                PageTitle: 'Login',
+                isAuthenticated: req.session.isAuthenticated,
+                invalid: true
+            });
+        });
+};
